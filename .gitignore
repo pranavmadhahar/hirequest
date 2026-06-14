@@ -1,0 +1,43 @@
+# Environment variables
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Jupyter artifacts
+.ipynb_checkpoints/
+# Keep notebooks for demo clarity, don’t exclude *.ipynb
+
+# Virtual environments
+myenv/
+venv/
+
+# Node.js (frontend)
+frontend/node_modules/
+frontend/.next/
+frontend/.cache/
+
+# Raw datasets
+assets/data/
+assets/cleaned_data/
+
+# Build artifacts
+assets/build/
+dist/
+build/
+*.egg-info/
+
+# Vectorstores / FAISS indexes
+vectorstores/
+assets/vectorstores/
+*.faiss
+*.pkl
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
