@@ -1,43 +1,70 @@
+# =====================
 # Environment variables
+# =====================
 .env
+.envrc
 
-# Python cache
+# =====================
+# Python
+# =====================
 __pycache__/
 *.pyc
 *.pyo
-
-# Jupyter artifacts
-.ipynb_checkpoints/
-# Keep notebooks for demo clarity, don’t exclude *.ipynb
+*.pyd
 
 # Virtual environments
 myenv/
 venv/
+.venv/
 
+# =====================
+# Jupyter
+# =====================
+.ipynb_checkpoints/
+*.ipynb
+
+# (keep notebooks tracked, but ignore checkpoints only)
+
+# =====================
 # Node.js (frontend)
+# =====================
 frontend/node_modules/
 frontend/.next/
 frontend/.cache/
 
-# Raw datasets
-assets/data/
+# =====================
+# RAG DATA PIPELINE (IMPORTANT)
+# =====================
+
+# Raw / processed data
+assets/raw_data/
 assets/cleaned_data/
 
-# Build artifacts
-assets/build/
+# Chunk outputs
+assets/chunks/
+
+# Vector databases / embeddings
+assets/vectorstores/
+
+# FAISS index files (extra safety)
+*.faiss
+index.faiss
+index.pkl
+
+# =====================
+# Build / packaging
+# =====================
 dist/
 build/
 *.egg-info/
 
-# Vectorstores / FAISS indexes
-vectorstores/
-assets/vectorstores/
-*.faiss
-*.pkl
-
+# =====================
 # Logs
+# =====================
 *.log
 
+# =====================
 # OS files
+# =====================
 .DS_Store
 Thumbs.db
