@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
-function LandingPage({ setCandidateId }) {
+function LandingPage({ setCandidateId, setCandidateName }) {
   const [name, setName] = useState("");
   const [resume, setResume] = useState(null);
   const [role, setRole] = useState("ML");
@@ -27,6 +27,7 @@ function LandingPage({ setCandidateId }) {
 
         // Store candidate_id in React state (lifted to App.jsx)
         setCandidateId(data.candidate_id);
+        setCandidateName(data.candidate_name); // Store candidate_name in state 
 
         // Route to ChatUI
         navigate("/chat");

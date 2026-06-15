@@ -76,9 +76,9 @@ def load_domain_chain(domain: str):
     )
 
     chain = RunnableSequence(
-        steps=[
+        
             {
-                "context": lambda x: format_docs(retriever.invoke(x.get("resume_context", ""))),
+                "context": lambda x: format_docs(retriever.invoke(domain)),
                 "role": lambda x: x.get("role", domain),
                 "resume_context": lambda x: x.get("resume_context", ""),
                 "history": lambda x: x.get("history", []),
@@ -87,6 +87,6 @@ def load_domain_chain(domain: str):
             prompt,
             llm,
             parser
-        ]
+        
     )
     return chain

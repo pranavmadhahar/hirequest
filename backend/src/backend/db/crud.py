@@ -19,7 +19,6 @@ def format_history_for_prompt(records: list[dict]) -> str:
 def save_answer(db: Session, candidate_id: str, role: str, question: str, answer: str):
     record = InterviewHistory(
         candidate_id=candidate_id,
-        role=role,
         question=question,
         answer=answer
     )

@@ -44,7 +44,7 @@ async def register_candidate(
     # Save vectorstore under Candidate_Resumes/{id}
     vectorstore.save_local(f"../../assets/vectorstores/Candidate_Resumes/{candidate.id}")
 
-    return {"candidate_id": candidate.id}
+    return {"candidate_id": candidate.id, "candidate_name": candidate.name}
 
 
 @router.post("/interview")

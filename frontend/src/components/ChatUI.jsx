@@ -57,12 +57,12 @@ function ChatUI({ candidateId, candidateName, role }) {
 
     try {
       // Save answer to backend
-      await fetch("http://localhost:8000/answer", {
+      await fetch("http://localhost:8000/interview/answer", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           candidate_id: candidateId,
-          role,
+          role: role,
           question: messages[messages.length - 1].text, // last bot question
           answer: input,
         }),
@@ -74,7 +74,7 @@ function ChatUI({ candidateId, candidateName, role }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           candidate_id: candidateId,
-          role,
+          role: role,
         }),
       });
       const data = await res.json();

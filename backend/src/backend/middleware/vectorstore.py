@@ -23,7 +23,8 @@ def get_resume_context(candidate_id: int, role: str, k: int = 10) -> str:
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
     vectorstore = FAISS.load_local(
         f"../../assets/vectorstores/Candidate_Resumes/{candidate_id}",
-        embeddings
+        embeddings,
+        allow_dangerous_deserialization=True
     )
 
     retrieved_docs = vectorstore.similarity_search(role, k=k)

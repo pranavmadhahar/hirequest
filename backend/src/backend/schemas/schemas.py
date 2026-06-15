@@ -18,8 +18,6 @@ class AnswerRequest(BaseModel):
 class InterviewRequest(BaseModel):
     candidate_id: int
     role: str
-    resume_context: str
-    latest_answer: Optional[str] = None
 
 class InterviewResponse(BaseModel):
     question: str

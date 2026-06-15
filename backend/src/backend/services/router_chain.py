@@ -22,7 +22,7 @@ from backend.services.domain_chains import load_domain_chain
 def route_by_role(inputs):
     role = inputs.get("role", "")
     resume_context = inputs.get("resume_context", "")
-    history = inputs.get("history", [])
+    history = inputs.get("history", "")
 
     if role == "ML":
         chain = load_domain_chain("ML")
