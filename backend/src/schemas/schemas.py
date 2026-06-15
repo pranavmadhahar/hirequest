@@ -3,11 +3,6 @@ from pydantic import BaseModel
 from typing import Optional, List
 
 # ---- Candidate APIs ----
-class CandidateRequest(BaseModel):
-    name: str
-    resume_text: str
-    role: str
-
 class StartInterviewRequest(BaseModel):
     candidate_id: int
     role: str
