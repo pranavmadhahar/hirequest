@@ -21,7 +21,7 @@ function ChatUI({ candidateId, candidateName, role }) {
   useEffect(() => {
     const startInterview = async () => {
       try {
-        const res = await fetch("http://localhost:8000/interview", {
+        const res = await fetch("http://localhost:8000/candidate/interview", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

@@ -6,7 +6,7 @@ from typing import Optional, List
 class StartInterviewRequest(BaseModel):
     candidate_id: int
     role: str
-    resume_context: str
+    
 
 # ---- Interview APIs ----
 class AnswerRequest(BaseModel):

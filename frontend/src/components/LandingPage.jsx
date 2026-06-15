@@ -1,10 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 function LandingPage({ setCandidateId }) {
   const [name, setName] = useState("");
   const [resume, setResume] = useState(null);
   const [role, setRole] = useState("ML");
-  
+
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,7 +18,7 @@ function LandingPage({ setCandidateId }) {
     formData.append("role", role);
 
     try {
-        const res = await fetch("http://localhost:8000/candidate", {
+        const res = await fetch("http://localhost:8000/candidate/", {
             method: "POST",
             body: formData,
         });

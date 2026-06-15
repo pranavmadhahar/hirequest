@@ -19,7 +19,7 @@ from backend.middleware.vectorstore import get_resume_context
 
 router = APIRouter()
 
-@router.post("/candidate")
+@router.post("/")
 async def register_candidate(
     name: str = Form(...),
     role: str = Form(...),
@@ -37,8 +37,9 @@ async def register_candidate(
 
     # Embed and store chunks in FAISS
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+    metadatas = [{"candidate_id": candidate.id} for _ in resume_chunks]
     vectorstore = FAISS.from_texts(resume_chunks, embedding=embeddings,
-                                   metadatas=[{"candidate_id": candidate.id}])
+                                   metadatas=metadatas)
 
     # Save vectorstore under Candidate_Resumes/{id}
     vectorstore.save_local(f"../../assets/vectorstores/Candidate_Resumes/{candidate.id}")
