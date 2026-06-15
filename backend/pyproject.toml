@@ -1,0 +1,16 @@
+[project]
+name = "hirequest"
+version = "0.1.0"
+description = "HireQuest backend interview simulation service"
+authors = [{ name = "Pranav" }]
+dependencies = [
+    "langchain",
+    "langchain-community",
+    "langchain-huggingface",
+    "langchain-openai",
+    "fastapi",
+    "uvicorn"
+]
+
+[tool.setuptools.packages.find]
+where = ["src", "../assets"]
