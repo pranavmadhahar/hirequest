@@ -2,22 +2,49 @@
  * ChatUI.jsx
  * Candidate interview chat interface.
  * Uses candidate's name and QuestAI bot for Q&A loop.
- * Integrates backend APIs: /answer and /interview/{id}/question.
+ * Integrates backend APIs: /interview (first question), /answer, /interview/{id}/question.
  */
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { FaRobot } from "react-icons/fa";
 
 function ChatUI({ candidateId, candidateName, role }) {
   const BOT_NAME = "QuestAI"; // branded interviewer
 
   // Chat state
-  const [messages, setMessages] = useState([
-    { text: `Hello ${candidateName}, welcome to your ${role} interview!`, sender: BOT_NAME },
-  ]);
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const textareaRef = useRef(null);
   const [loading, setLoading] = useState(false);
+
+  // 🔹 Call /interview on mount to get the first question
+  useEffect(() => {
+    const startInterview = async () => {
+      try {
+        const res = await fetch("http://localhost:8000/interview", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            candidate_id: candidateId,
+            role: role,
+          }),
+        });
+        const data = await res.json();
+
+        // Add welcome + first question
+        setMessages([
+          { text: `Hello ${candidateName}, welcome to your ${role} interview!`, sender: BOT_NAME },
+          { text: data.question, sender: BOT_NAME },
+        ]);
+      } catch (err) {
+        console.error("Error starting interview:", err);
+      }
+    };
+
+    if (candidateId) {
+      startInterview();
+    }
+  }, [candidateId, role, candidateName]);
 
   // Handle answer submission + fetch next question
   const handleSend = async () => {
@@ -48,7 +75,6 @@ function ChatUI({ candidateId, candidateName, role }) {
         body: JSON.stringify({
           candidate_id: candidateId,
           role,
-          resume_context: "", // backend retrieves chunks
         }),
       });
       const data = await res.json();

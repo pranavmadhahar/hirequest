@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "assets"
+version = "0.1.0"
+description = "HireQuest assets package"
+authors = [{ name = "Pranav" }]
+
+[tool.setuptools.packages.find]
+where = ["src"]
