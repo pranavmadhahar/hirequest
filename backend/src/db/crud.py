@@ -8,6 +8,14 @@ def get_history(db: Session, candidate_id: str):
     ).order_by(InterviewHistory.timestamp).all()
     return [{"question": r.question, "answer": r.answer} for r in records]
 
+
+def format_history_for_prompt(records: list[dict]) -> str:
+    """Convert list of {question, answer} dicts into a readable string transcript."""
+    if not records:
+        return ""
+    return "\n".join([f"Q: {r['question']} | A: {r['answer']}" for r in records])
+
+
 def save_answer(db: Session, candidate_id: str, role: str, question: str, answer: str):
     record = InterviewHistory(
         candidate_id=candidate_id,

@@ -1,22 +1,17 @@
-
-"""
-router_chain.py
-===============
-
-Dispatches candidate context (resume, role, history) to the correct domain chain
-(ML, Advanced_ML, Data_Science) using function-based routing.
-
-The router_chain takes the payload from FastAPI (including role, resume_context,
-and history) and invokes the appropriate domain chain defined in domain_chains.py.
-"""
-
 from langchain_core.runnables import RunnableLambda
 from domain_chains import load_domain_chain
+from src.crud import get_history, format_history_for_prompt
 
-def route_by_role(inputs):
+def route_by_role(inputs, db):
     role = inputs.get("role", "")
     resume_context = inputs.get("resume_context", "")
-    history = inputs.get("history", [])
+    candidate_id = inputs.get("candidate_id")
+
+    # Fetch raw history from DB (list of dicts)
+    records = get_history(db, candidate_id)
+
+    # Format into string transcript for prompt injection
+    history_str = format_history_for_prompt(records)
 
     if role == "ML":
         chain = load_domain_chain("ML")
@@ -27,11 +22,10 @@ def route_by_role(inputs):
     else:
         raise ValueError(f"Unsupported role: {role}")
 
-    # Pass the candidate context into the chosen domain chain
     return chain.invoke({
         "role": role,
         "resume_context": resume_context,
-        "history": history
+        "history": history_str
     })
 
 # Router chain definition

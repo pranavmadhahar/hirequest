@@ -10,11 +10,12 @@ from sqlalchemy.orm import Session
 from src.db.db import get_db
 from src.db.models import Candidate
 from src.schemas.schemas import StartInterviewRequest, InterviewResponse
-from src.db.crud import save_answer
+from src.db.crud import save_answer, format_history_for_prompt
 from src.services.router_chain import router_chain
 from src.middleware.parser import parse_resume
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
+from src.middleware.vectorstore import get_resume_context
 
 router = APIRouter()
 
@@ -48,21 +49,12 @@ async def register_candidate(
 @router.post("/interview")
 def start_interview(req: StartInterviewRequest, db: Session = Depends(get_db)):
     # Reload candidate vectorstore
-    embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
-    vectorstore = FAISS.load_local(
-        f"../../assets/vectorstores/Candidate_Resumes/{req.candidate_id}",
-        embeddings
-    )
-
-    # Retrieve top‑k chunks relevant to role
-    retrieved_docs = vectorstore.similarity_search(req.role, k=10)
-    retrieved_context = "\n".join([doc.page_content for doc in retrieved_docs])
-
+    retrieved_context = get_resume_context(req.candidate_id, req.role, k=10)
     # Build payload for interview chain
     payload = {
         "role": req.role,
         "resume_context": retrieved_context,
-        "history": []
+        "history": ""
     }
     result = router_chain.invoke(payload)
 
