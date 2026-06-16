@@ -12,12 +12,26 @@ import { useState, useRef, useEffect } from "react";
 import { FaRobot } from "react-icons/fa";
 
 /* ---------------- Typewriter ---------------- */
+/**
+ * Typewriter
+ * ----------
+ * Renders text character-by-character to simulate a typing effect.
+ *
+ * Props:
+ * - text (string): Content to animate.
+ * - onComplete (function): Callback executed once animation finishes.
+ *
+ * Notes:
+ * - Uses a ref to always invoke the latest callback without
+ *   restarting the typing animation.
+ * - Animation restarts whenever the text prop changes.
+ */
 
 function Typewriter({ text, onComplete }) {
   const [displayed, setDisplayed] = useState("");
   const onCompleteRef = useRef(onComplete);
 
-  // Always keep latest callback without restarting animation
+ // Keep callback reference current without re-triggering animation.
   useEffect(() => {
     onCompleteRef.current = onComplete;
   }, [onComplete]);
@@ -64,7 +78,12 @@ function ChatUI({ candidateId, candidateName, role }) {
   const textareaRef = useRef(null);
 
   /* ---------------- Helper ---------------- */
-
+  /**
+ * Append a new bot message to the chat.
+ *
+ * All bot messages are animated by default using the
+ * Typewriter component.
+ */
   const addBotMessage = (text) => {
     setMessages((prev) => [
       ...prev,
@@ -77,7 +96,13 @@ function ChatUI({ candidateId, candidateName, role }) {
   };
 
   /* ---------------- Start Interview ---------------- */
-
+  /**
+ * Initialize interview session.
+ *
+ * Triggered when candidate information becomes available.
+ * Requests the first interview question from the backend
+ * and populates the initial chat messages.
+ */
   useEffect(() => {
     const startInterview = async () => {
       try {
@@ -128,7 +153,12 @@ function ChatUI({ candidateId, candidateName, role }) {
   }, [candidateId, candidateName, role]);
 
   /* ---------------- Textarea Resize ---------------- */
-
+  /**
+ * Auto-resize textarea based on content height.
+ *
+ * Keeps the input compact for short answers while allowing
+ * multi-line responses without scrollbars.
+ */
   const handleInputChange = (e) => {
     setInput(e.target.value);
 
@@ -141,7 +171,15 @@ function ChatUI({ candidateId, candidateName, role }) {
   };
 
   /* ---------------- Send Answer ---------------- */
-
+  /**
+ * Submit candidate response and request next interview step.
+ *
+ * Flow:
+ * 1. Save candidate answer.
+ * 2. Persist answer in backend.
+ * 3. Request next question or interview summary.
+ * 4. Render response in chat.
+ */
   const handleSend = async () => {
     const answerText = input.trim();
 
@@ -202,7 +240,7 @@ function ChatUI({ candidateId, candidateName, role }) {
         setMessages((prev) => [
           ...prev,
           {
-            text: data.summary,
+            text: `Summary: ${data.summary}`,
             sender: BOT_NAME,
             animate: true,
             isSummary: true,
@@ -263,6 +301,14 @@ function ChatUI({ candidateId, candidateName, role }) {
                   {msg.animate ? (
                     <Typewriter
                       text={msg.text}
+                      /**
+                       * When the summary animation completes:
+                       * 1. Mark the summary message as fully rendered.
+                       * 2. Append the closing message.
+                       *
+                       * This guarantees the closing message appears only after
+                       * the summary has finished typing.
+                       */
                         onComplete={() => {
                           if (msg.isSummary && msg.closing) {
                             addBotMessage(msg.closing);

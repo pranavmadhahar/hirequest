@@ -7,13 +7,23 @@ function LandingPage({ setCandidateId, setCandidateName, role, setRole }) {
 
   const navigate = useNavigate(); 
 
+    /**
+   * Register candidate and initialize interview session.
+   *
+   * Flow:
+   * 1. Upload candidate details and resume.
+   * 2. Persist candidate information in backend.
+   * 3. Store candidate identifiers in shared application state.
+   * 4. Navigate to interview chat interface.
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting:", role);
 
+    // Build multipart form payload for FastAPI upload endpoint.
     const formData = new FormData();
     formData.append("name", name);
-    formData.append("resume", resume);  // PDF or text file
+    // Resume file uploaded by candidate.
+    formData.append("resume", resume);
     formData.append("role", role);
 
     try {
@@ -72,12 +82,11 @@ function LandingPage({ setCandidateId, setCandidateName, role, setRole }) {
             />
           </div>
 
-          {/* Role Dropdown */}
+          {/* Role selection drives interview routing and question generation */}
             <div className="relative">
               <select
                 value={role}
                 onChange={(e) => {
-                  console.log("Selected role:", e.target.value);
                   setRole(e.target.value);
                 }}
                 className="appearance-none w-full px-4 py-3 pr-10 rounded-lg bg-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
