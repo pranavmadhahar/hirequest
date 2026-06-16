@@ -13,7 +13,6 @@ class Candidate(Base):
     # relationship to InterviewHistory, one-to-many relationship
     history = relationship("InterviewHistory", back_populates="candidate")
 
-
 class InterviewHistory(Base):
     __tablename__ = "interview_history"
 
@@ -25,3 +24,17 @@ class InterviewHistory(Base):
 
     # relationship back to Candidate, many-to-one relationship
     candidate = relationship("Candidate", back_populates="history")
+    
+class InterviewConfig(Base):
+    __tablename__ = "interview_config"
+    id = Column(Integer, primary_key=True, index=True)
+    candidate_id = Column(Integer, index=True)
+    role = Column(String)
+    n_questions = Column(Integer)
+
+class InterviewSummary(Base):
+    __tablename__ = "interview_summary"
+    id = Column(Integer, primary_key=True, index=True)
+    candidate_id = Column(Integer, index=True)
+    role = Column(String)
+    summary = Column(Text)

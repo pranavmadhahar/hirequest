@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 from backend.db.db import get_db
 from backend.db.models import Candidate
 from backend.schemas.schemas import StartInterviewRequest, InterviewResponse
-from backend.db.crud import save_answer, format_history_for_prompt
+from backend.db.crud import save_answer, format_history_for_prompt, save_interview_config, get_interview_config
 from backend.services.router_chain import router_chain
 from backend.middleware.parser import parse_resume
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -61,5 +61,8 @@ def start_interview(req: StartInterviewRequest, db: Session = Depends(get_db)):
 
     # Log first question (answer=None initially)
     save_answer(db, req.candidate_id, req.role, result["question"], None)
+
+    # Store interview config (n_questions) in DB/session
+    save_interview_config(db, req.candidate_id, req.role, req.n_questions)
 
     return InterviewResponse(**result)

@@ -47,7 +47,7 @@ function ChatUI({ candidateId, candidateName, role }) {
   }, [candidateId, role, candidateName]);
 
   // Handle answer submission + fetch next question
-  const handleSend = async () => {
+    const handleSend = async () => {
     if (input.trim() === "" || loading) return;
     setLoading(true);
 
@@ -68,7 +68,7 @@ function ChatUI({ candidateId, candidateName, role }) {
         }),
       });
 
-      // Fetch next question
+      // Fetch next question or summary
       const res = await fetch(`http://localhost:8000/interview/${candidateId}/question`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -79,8 +79,16 @@ function ChatUI({ candidateId, candidateName, role }) {
       });
       const data = await res.json();
 
-      // Append next question
-      setMessages((prev) => [...prev, { text: data.question, sender: BOT_NAME }]);
+      // Branch: summary vs next question
+      if (data.status === "complete") {
+        setMessages((prev) => [
+          ...prev,
+          { text: data.summary, sender: BOT_NAME },
+          { text: data.closing, sender: BOT_NAME },
+        ]);
+      } else {
+        setMessages((prev) => [...prev, { text: data.question, sender: BOT_NAME }]);
+      }
     } catch (err) {
       console.error(err);
       setMessages((prev) => [...prev, { text: "Error fetching next question.", sender: BOT_NAME }]);
@@ -90,6 +98,7 @@ function ChatUI({ candidateId, candidateName, role }) {
       if (textareaRef.current) textareaRef.current.style.height = "auto";
     }
   };
+
 
   return (
     <div className="flex flex-col h-screen">
