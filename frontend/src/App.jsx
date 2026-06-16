@@ -13,6 +13,7 @@ function App() {
   // Candidate state (shared across pages)
   const [candidateId, setCandidateId] = useState(null);
   const [candidateName, setCandidateName] = useState(null);
+  const [role, setRole] = useState("ML");
 
   return (
     <BrowserRouter>
@@ -24,6 +25,8 @@ function App() {
             <LandingPage
               setCandidateId={setCandidateId}
               setCandidateName={setCandidateName}
+              setRole={setRole}
+              role={role} // Pass role to LandingPage for selection
             />
           }
         />
@@ -35,7 +38,7 @@ function App() {
             <ChatUI
               candidateId={candidateId}
               candidateName={candidateName}
-              role="ML" // or pass role dynamically if needed
+              role={role} // or pass role dynamically if needed
             />
           }
         />

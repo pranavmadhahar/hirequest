@@ -113,3 +113,8 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+select option {
+  color: black;
+  background-color: white;
+}
