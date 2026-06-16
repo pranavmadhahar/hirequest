@@ -24,7 +24,12 @@ def next_question(candidate_id: int, req: InterviewRequest, db: Session = Depend
     config = get_interview_config(db, candidate_id, req.role)
 
     # Decide mode
-    mode = "summary" if len(history) >= config.n_questions else "question"
+    question_count = sum(
+        1 for h in history[1:] # skip the first greeting entry
+        if h.get("question") and not h.get("answer")
+    )
+
+    mode = "summary" if question_count >= config.n_questions else "question"
 
     retrieved_context = get_resume_context(req.candidate_id, req.role, k=10)
     payload = {
