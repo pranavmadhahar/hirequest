@@ -6,6 +6,7 @@ from typing import Optional, List
 class StartInterviewRequest(BaseModel):
     candidate_id: int
     role: str
+    n_questions: int = 5
     
 
 # ---- Interview APIs ----
@@ -24,3 +25,6 @@ class InterviewResponse(BaseModel):
     role: str
     domain: str
     context: str
+
+
+    

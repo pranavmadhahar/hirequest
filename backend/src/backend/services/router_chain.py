@@ -18,12 +18,22 @@ model="gpt-4o-mini"
 
 from langchain_core.runnables import RunnableLambda
 from backend.services.domain_chains import load_domain_chain
+from backend.services.summary_chain import summary_chain
 
 def route_by_role(inputs):
     role = inputs.get("role", "")
     resume_context = inputs.get("resume_context", "")
     history = inputs.get("history", "")
+    mode = inputs.get("mode", "question")  # default to question
 
+    if mode == "summary":
+        # Route to summary chain
+        return summary_chain.invoke({
+            "role": role,
+            "history": history
+        })
+
+    # Otherwise → route to domain chain
     if role == "ML":
         chain = load_domain_chain("ML")
     elif role == "Advanced_ML":
@@ -33,7 +43,6 @@ def route_by_role(inputs):
     else:
         raise ValueError(f"Unsupported role: {role}")
 
-    # Pass the candidate context into the chosen domain chain
     return chain.invoke({
         "role": role,
         "resume_context": resume_context,
@@ -42,3 +51,4 @@ def route_by_role(inputs):
 
 # Router chain definition
 router_chain = RunnableLambda(route_by_role)
+
