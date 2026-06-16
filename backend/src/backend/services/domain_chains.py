@@ -68,12 +68,19 @@ def load_domain_chain(domain: str):
         Previous Q&A: {history}
 
         You are an expert in {domain}.
-        Use the following retrieved context to craft the next interview question:
+        Use the retrieved context below to craft the next interview question:
         {context}
+
+        IMPORTANT:
+        - Ask a diverse question that explores a new angle of {domain}.
+        - Do not simply follow up on the last answer.
+        - Vary between conceptual, applied, scenario-based, and critical-thinking styles.
+        - Keep the question clear and recruiter-friendly.
 
         Candidate role: {role}
         Respond ONLY in JSON with keys: question, role, domain, context."""
     )
+
 
     chain = RunnableSequence(
         

@@ -6,7 +6,7 @@ from typing import Optional, List
 class StartInterviewRequest(BaseModel):
     candidate_id: int
     role: str
-    n_questions: int = 5
+    n_questions: int = 3
     
 
 # ---- Interview APIs ----
