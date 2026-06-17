@@ -15,7 +15,6 @@ load_dotenv(find_dotenv())
 # llm model
 model="gpt-4o-mini"
 
-from pathlib import Path
 from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
@@ -24,8 +23,9 @@ from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import JsonOutputParser
 from pydantic import BaseModel, Field
 
-from assets.build.paths import VECTORSTORES_DIR
+from backend.config import VECTORSTORES_DIR
 
+print(f"Using vectorstores directory: {VECTORSTORES_DIR}")
 embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.3)
 

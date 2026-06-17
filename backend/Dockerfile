@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Install system dependencies (for common Python packages)
 RUN apt-get update && apt-get install -y \
-    build-essential \
+    build-essential sqlite3 \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy dependency files first (for caching)
@@ -15,11 +15,14 @@ COPY pyproject.toml ./pyproject.toml
 
 # Install Python dependencies
 RUN pip install --upgrade pip \
-    && pip install -r requirements.txt \
-    && pip install -e .
+    && pip install -r requirements.txt
 
-# Copy source code
-COPY src ./src
+# Copy source code (so setuptools can see /app/src/backend)
+COPY src ./src/
+
+# Editable install (now src exists)
+RUN pip install -e .
+RUN mkdir -p /data
 
 # Expose FastAPI port
 EXPOSE 8000

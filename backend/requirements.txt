@@ -21,6 +21,10 @@ faiss-cpu==1.14.3
 sentence-transformers==5.5.1
 tiktoken==0.13.0
 transformers==5.12.0
+PyMuPDF
+python-docx
+
+
 
 # Optional (for notebooks / demos)
 jupyter==1.1.1

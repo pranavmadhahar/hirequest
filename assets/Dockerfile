@@ -12,9 +12,11 @@ RUN apt-get update && apt-get install -y \
 COPY pyproject.toml ./
 COPY src ./src
 COPY entrypoint.sh ./entrypoint.sh
+COPY requirements.txt ./requirements.txt
 
 # Install dependencies
 RUN pip install --upgrade pip \
+    && pip install -r requirements.txt \
     && pip install -e . \
     && chmod +x entrypoint.sh
 

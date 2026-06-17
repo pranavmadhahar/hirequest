@@ -1,0 +1,9 @@
+pydantic
+langchain-core
+langchain-huggingface
+langchain-community
+PyMuPDF
+sentence-transformers
+faiss-cpu
+openai
+python-dotenv

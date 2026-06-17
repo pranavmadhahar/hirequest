@@ -9,13 +9,17 @@ Provides:
 - Declarative base class
 - FastAPI database dependency
 """
+
+from dotenv import load_dotenv, find_dotenv 
+load_dotenv(find_dotenv())
+
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-
-DATABASE_URL = "sqlite:////home/pranav/Den/HireQuest/interview.db"
-
-
+DATABASE_URL = os.getenv("DATABASE_URL")
+if not DATABASE_URL:
+    DATABASE_URL = "sqlite:////data/interview.db"
 
 # SQLAlchemy engine used for all database connections.
 engine = create_engine(
