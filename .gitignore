@@ -71,4 +71,7 @@ Thumbs.db
 
 *.db
 
-
+**/raw_data/
+**/cleaned_data/
+**/chunks/
+**/vectorstores/
