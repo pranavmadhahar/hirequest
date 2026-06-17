@@ -13,8 +13,10 @@ Responsibilities:
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from backend.db import models # noqa: F401 (needed for table registration)
 from backend.api import candidate, interview
 from backend.db.db import Base, engine
+from backend.db import db_tracking
 
 
 # Create FastAPI application instance.
@@ -48,3 +50,8 @@ app.include_router(
     prefix="/interview",
     tags=["interview"],
 )
+
+app.include_router(
+    db_tracking.router, 
+    prefix="/db", 
+    tags=["db-tracking"])

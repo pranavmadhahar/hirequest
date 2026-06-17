@@ -9,12 +9,12 @@ Provides:
 - Declarative base class
 - FastAPI database dependency
 """
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 
-DATABASE_URL = "sqlite:///./interview.db"
+DATABASE_URL = "sqlite:////home/pranav/Den/HireQuest/interview.db"
+
 
 
 # SQLAlchemy engine used for all database connections.
