@@ -140,17 +140,16 @@ HireQuest includes built‑in database observability to make interview session d
 
  - Conversation replay — stored Q&A can be reviewed for analytics or recruiter dashboards
 
- - Endpoint: 
+**Endpoints:**
 
-    - "/db/tables"
+  - "/db/tables"
 
 ```json
 {
   "tables": ["candidates", "interview_history", "interview_config", "interview_summary"]
 }
 ```
-     
-     - "/db/table/interview_history"
+  - "/db/table/interview_history"
 
 ```json
 [
