@@ -47,32 +47,53 @@ flowchart TD
 HireQuest/
 │
 ├── assets/                  # Preprocessing + vectorstore build service
+│   ├── Dockerfile
+│   ├── entrypoint.sh
+│   ├── pyproject.toml
+│   ├── requirements.txt
 │   └── src/assets/
 │       ├── build/           # Index build pipelines
 │       ├── chunks/          # Resume/interview chunks
 │       ├── cleaned_data/    # Normalized datasets
 │       ├── raw_data/        # Raw resumes/datasets
-│       └── vectorstores/    # FAISS indexes
+│       ├── vectorstores/    # FAISS indexes
+│       ├── __init__.py
+│       └── __pycache__/
 │
 ├── backend/                 # FastAPI backend service
+│   ├── Dockerfile
+│   ├── pyproject.toml
+│   ├── requirements.txt
+│   ├── requirements-dev.txt
 │   └── src/backend/
 │       ├── api/             # candidate.py, interview.py
 │       ├── db/              # models, crud, db.py, db_tracking.py
 │       ├── services/        # domain_chains, router_chain, summary_chain
 │       ├── middleware/      # parser, helpers
-│       └── schemas/         # Pydantic schemas
-│
-├── db/                      # migrations + init.sql
-│   └── interview.db         # SQLite file
+│       ├── schemas/         # Pydantic schemas
+│       ├── main.py
+│       └── config.py
 │
 ├── frontend/                # React + Tailwind UI
 │   └── src/components/      # ChatUI, LandingPage
 │
+├── data/                    # Host-mounted data folders (gitignored)
+│   ├── db/                  # SQLite database
+│   ├── raw_data/            # Raw PDFs, resumes, corpora
+│   ├── cleaned_data/        # Normalized JSONs
+│   ├── chunks/              # Chunked JSONs
+│   └── vectorstores/        # FAISS indexes
+│
+├── db/                      # Migrations + init.sql
+│   └── interview.db         # SQLite file
+│
 ├── notebooks/               # Jupyter experiments
-│   
-├── requirements.txt
-├── pyproject.toml
-└── README.md
+│
+├── docker-compose.yaml
+├── k8s/                     # Kubernetes manifests
+├── myenv/                   # Local Python virtual environment
+├── README.md
+└── interview.db             # SQLite file (local dev)
 ```
 ---
 
@@ -180,7 +201,71 @@ HireQuest uses Pydantic schemas to define the API contract:
 
 ---
 
+## 📂 Data Folders & Gitignore
+
+Place this section after “Data Sources” to explain why folders are missing:
+
+⚠️ These folders are .gitignored and won’t exist after clone. Create them manually:
+
+For docker based deployment:
+
+```bash
+mkdir -p data/db data/raw_data data/cleaned_data data/chunks data/vectorstores
+```
+
+For local setup:
+
+```bash
+mkdir -p assets/raw_data assets/cleaned_data assets/chunks assets/vectorstores
+```
+
+---
+
+## 🧭 Workflow Summary
+
+ - Place raw PDFs into ./data/raw_data for docker compose based deployment.
+
+ - Run docker-compose up.
+
+ - For local setup place raw PDF's into /assets/raw_data dir
+
+ - Assets preprocess → cleaned JSONs → chunks → FAISS indexes.
+
+ - Backend loads indexes by role (Data_Science, ML, etc.).
+
+ - Frontend serves recruiter/demo UI.
+
+---
+
 ## 🚀 Installation
+
+### 🔑 Environment Variables
+
+```bash
+cp .env.example .env
+```
+
+Fill in:
+
+```env
+OPENAI_API_KEY=your-openai-api-key-here
+VECTORSTORES_DIR=/home/username/dirname/HireQuest/assets/src/assets/vectorstores
+DATABASE_URL=sqlite:////home/username/dirname/HireQuest/interview.db
+```
+
+Note: Mention absolute paths in VECTORSTORES_DIR and DATABASE_URL. Example paths mentioned above.
+
+### Run Stack With One Command
+
+```bash
+docker-compose up --build
+```
+
+ - Frontend → http://localhost:3000
+
+ - Backend → http://localhost:8000/api/...
+
+ - Assets → preprocesses raw data and builds FAISS indexes
 
 ### Backend Setup
 
@@ -257,8 +342,6 @@ http://localhost:5173
 
 ## 📈 Future Improvements
 
- - Semantic routing with embeddings
-
  - Streaming interview responses
 
  - Recruiter dashboard frontend
@@ -272,6 +355,30 @@ http://localhost:5173
  - Confidence scoring in summaries
 
  - Analytics‑ready metadata (difficulty, tags)
+
+---
+
+## 📚 Reference Data Sources
+
+Machine Learning
+
+ - Machine Learning — Tom Mitchell
+
+ - The Hundred-Page Machine Learning Book — Andriy Burkov
+
+ - Machine Learning for Absolute Beginners
+
+Data Science
+
+ - Introduction to Machine Learning with Python
+
+ - Master Machine Learning Algorithms — Jason Brownlee
+
+Advanced ML
+
+ - Pattern Recognition and Machine Learning — Christopher Bishop
+
+ - Artificial Intelligence, Machine Learning & Deep Learning
 
 ---
 
