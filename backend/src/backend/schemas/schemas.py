@@ -9,7 +9,7 @@ frontend and backend layers.
 """
 
 from pydantic import BaseModel
-
+from typing import List, Dict
 
 # ------------------------------------------------------------------
 # Interview Initialization
@@ -66,3 +66,22 @@ class InterviewResponse(BaseModel):
     role: str
     domain: str
     context: str
+
+# ------------------------------------------------------------------
+# Database Tracking Schemas
+# ------------------------------------------------------------------
+
+class TablesResponse(BaseModel):
+    tables: List[str]
+
+class TableRowsResponse(BaseModel):
+    table: str
+    rows: List[Dict]
+
+class ResetResponse(BaseModel):
+    status: str
+    message: str
+
+class DeleteDBResponse(BaseModel):
+    status: str
+    message: str

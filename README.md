@@ -120,11 +120,29 @@ HireQuest includes built‑in database observability to make interview session d
 
  - Conversation replay — stored Q&A can be reviewed for analytics or recruiter dashboards
 
- - Endpoints: 
+ - Endpoint: 
 
       - /db/tables
-      - /db/table/candidates
+
+```json
+{
+  "tables": ["candidates", "interview_history", "interview_config", "interview_summary"]
+}
+```
+     
       - /db/table/interview_history
+```json
+[
+  {
+    "id": 42,
+    "candidate_id": 7,
+    "role": "backend_engineer",
+    "question": "Explain ACID properties in databases",
+    "answer": "Atomicity ensures..."
+  }
+]
+```
+
 
 ---
 
@@ -232,7 +250,7 @@ npm run dev
 ```
 
 Frontend runs at:
-```Code
+```code
 http://localhost:5173
 ```
 ---
