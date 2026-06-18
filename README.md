@@ -30,7 +30,8 @@ The system integrates a React frontend, FastAPI backend, SQLite database, and As
 
 ```mermaid
 flowchart TD
-    A[Candidate Resume + Role] --> B[Input Normalization]
+    A[Candidate Resume + Role] --> A1[Resume Chunking + Embeddings]
+    A1 --> B[Input Normalization + similarity search]
     B --> C[Router Chain]
     C -->|Role-specific| D[Domain Interview Chain]
     D --> E[Assets Vectorstores]
@@ -141,7 +142,7 @@ HireQuest includes built‑in database observability to make interview session d
 
  - Endpoint: 
 
-    - /db/tables
+    - "/db/tables"
 
 ```json
 {
@@ -149,7 +150,7 @@ HireQuest includes built‑in database observability to make interview session d
 }
 ```
      
-     - /db/table/interview_history
+     - "/db/table/interview_history"
 
 ```json
 [
