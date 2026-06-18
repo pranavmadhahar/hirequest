@@ -28,6 +28,16 @@ The system integrates a React frontend, FastAPI backend, SQLite database, and As
 
 ## 🏛 Architecture Overview
 
+HireQuest follows a **microservices-based architecture** for clarity, scalability, and recruiter/demo appeal:
+
+- **Frontend Service** → React + Tailwind UI
+- **Backend Service** → FastAPI orchestration + business logic
+- **Assets Service** → Preprocessing, chunking, embeddings, vectorstore build
+- **DB Service** → SQLite/Postgres persistence + observability
+
+Each service runs independently (Dockerized), communicates via JSON APIs, and can be deployed with Kubernetes for modular scaling.
+
+
 ```mermaid
 flowchart TD
     A[Candidate Resume + Role] --> A1[Resume Chunking + Embeddings]
