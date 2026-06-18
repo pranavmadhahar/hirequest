@@ -1,6 +1,7 @@
 services:
   frontend:
     image: ghcr.io/pranavmadhahar/hirequest/frontend:latest
+    pull_policy: if_not_present
     ports:
       - "3000:80"
     depends_on:
@@ -8,6 +9,7 @@ services:
 
   backend:
     image: ghcr.io/pranavmadhahar/hirequest/backend:latest
+    pull_policy: if_not_present
     ports:
       - "8000:8000"
     volumes:
@@ -20,6 +22,7 @@ services:
 
   assets:
     image: ghcr.io/pranavmadhahar/hirequest/assets:latest
+    pull_policy: if_not_present
     volumes:
       - ./data/vectorstores:/app/src/assets/vectorstores
       - ./data/raw_data:/app/src/assets/raw_data

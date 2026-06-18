@@ -100,30 +100,28 @@ HireQuest/
 ## 🔄 Interview Pipeline
 
 ### Offline Build Pipeline
-
-Role Knowledge Base
-    ↓
-Cleaned Datasets
-    ↓
-Chunking + Embeddings
-    ↓
-FAISS Vectorstores
+- Role Knowledge Base  
+  ↓  
+- Cleaned Datasets  
+  ↓  
+- Chunking + Embeddings  
+  ↓  
+- FAISS Vectorstores  
 
 ### Online Interview Pipeline
-
-Candidate Resume + Role
-    ↓
-Router Chain
-    ↓
-Role-specific Interview Chain
-    ↓
-Structured JSON Output
-    ↓
-Narration Layer
-    ↓
-Frontend Chat UI
-    ↓
-SQLite DB Tracking + Observability
+- Candidate Resume + Role  
+  ↓  
+- Router Chain  
+  ↓  
+- Role-specific Interview Chain  
+  ↓  
+- Structured JSON Output  
+  ↓  
+- Narration Layer  
+  ↓  
+- Frontend Chat UI  
+  ↓  
+- SQLite DB Tracking + Observability  
 
 ---
 
@@ -143,7 +141,7 @@ HireQuest includes built‑in database observability to make interview session d
 
  - Endpoint: 
 
-      - /db/tables
+    - /db/tables
 
 ```json
 {
@@ -151,7 +149,8 @@ HireQuest includes built‑in database observability to make interview session d
 }
 ```
      
-      - /db/table/interview_history
+     - /db/table/interview_history
+
 ```json
 [
   {
@@ -163,7 +162,6 @@ HireQuest includes built‑in database observability to make interview session d
   }
 ]
 ```
-
 
 ---
 
@@ -202,8 +200,6 @@ HireQuest uses Pydantic schemas to define the API contract:
 ---
 
 ## 📂 Data Folders & Gitignore
-
-Place this section after “Data Sources” to explain why folders are missing:
 
 ⚠️ These folders are .gitignored and won’t exist after clone. Create them manually:
 
@@ -290,13 +286,6 @@ cd backend
 pip install -r requirements-dev.txt
 ```
 
-4. Configure Environment Variables
-
-Create a .env file from .env.example and add:
-
-```Env
-OPENAI_API_KEY=your_openai_api_key
-```
 ---
 
 ### ▶️ Running the Backend
