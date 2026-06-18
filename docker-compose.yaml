@@ -1,0 +1,25 @@
+services:
+  frontend:
+    image: ghcr.io/pranavmadhahar/hirequest/frontend:latest
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  backend:
+    image: ghcr.io/pranavmadhahar/hirequest/backend:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data/db:/data
+      - ./data/vectorstores:/app/vectorstores
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      - assets
+
+  assets:
+    image: ghcr.io/pranavmadhahar/hirequest/assets:latest
+    volumes:
+      - ./data/vectorstores:/data/vectorstores
+    # command removed – assets now works directly with host vectorstores

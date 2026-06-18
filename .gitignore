@@ -75,3 +75,9 @@ Thumbs.db
 **/cleaned_data/
 **/chunks/
 **/vectorstores/
+
+data/
+*.faiss
+*.pkl
+*.db
+

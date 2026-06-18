@@ -2,4 +2,4 @@
 from pathlib import Path
 import os
 
-VECTORSTORES_DIR = Path(os.getenv("VECTORSTORES_DIR", "/app/vectorstores"))
+VECTORSTORES_DIR = Path(os.getenv("VECTORSTORES_DIR", "/data/vectorstores"))

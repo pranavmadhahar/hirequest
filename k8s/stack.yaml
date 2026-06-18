@@ -1,0 +1,171 @@
+# 1. Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hirequest
+---
+# 2. Assets PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: vectorstores-pvc
+  namespace: hirequest
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+# 3. Backend PVCs
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: backend-db-pvc
+  namespace: hirequest
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: backend-vectorstore-pvc
+  namespace: hirequest
+spec:
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 10Gi
+---
+# 4. Assets Job
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: assets-job
+  namespace: hirequest
+spec:
+  template:
+    spec:
+      containers:
+      - name: assets
+        image: ghcr.io/pranavmadhahar/hirequest/assets:latest
+        volumeMounts:
+        - name: vectorstores
+          mountPath: /data/vectorstores
+      restartPolicy: Never
+      volumes:
+      - name: vectorstores
+        persistentVolumeClaim:
+          claimName: vectorstores-pvc
+---
+# 5. Backend Deployment + Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: hirequest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: ghcr.io/pranavmadhahar/hirequest/backend:latest
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - name: backend-db
+          mountPath: /app/db
+        - name: backend-vectorstore
+          mountPath: /app/vectorstores
+          readOnly: true
+      volumes:
+      - name: backend-db
+        persistentVolumeClaim:
+          claimName: backend-db-pvc
+      - name: backend-vectorstore
+        persistentVolumeClaim:
+          claimName: backend-vectorstore-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: hirequest
+spec:
+  selector:
+    app: backend
+  ports:
+    - port: 8000
+      targetPort: 8000
+---
+# 6. Frontend Deployment + Service
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: hirequest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: ghcr.io/pranavmadhahar/hirequest/frontend:latest
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: hirequest
+spec:
+  selector:
+    app: frontend
+  ports:
+    - port: 3000
+      targetPort: 3000
+---
+# 7. Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hirequest-ingress
+  namespace: hirequest
+spec:
+  rules:
+  - host: hirequest.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-service
+            port:
+              number: 3000
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: backend-service
+            port:
+              number: 8000
