@@ -1,6 +1,3 @@
---extra-index-url https://download.pytorch.org/whl/cpu
-
-torch==2.8.0
 # Core backend
 fastapi==0.137.0
 uvicorn==0.49.0
@@ -21,9 +18,14 @@ langsmith==0.8.15
 
 # Retrieval / embeddings
 faiss-cpu==1.14.3
+sentence-transformers==5.5.1
 tiktoken==0.13.0
 transformers==5.12.0
 PyMuPDF
 python-docx
 
 
+
+# Optional (for notebooks / demos)
+jupyter==1.1.1
+ipywidgets==8.1.8

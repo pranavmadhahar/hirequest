@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hirequest-backend
+  namespace: hirequest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hirequest-backend
+  template:
+    metadata:
+      labels:
+        app: hirequest-backend
+    spec:
+      containers:
+        - name: backend
+          image: ghcr.io/pranavmadhahar/hirequest/backend:latest
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - containerPort: 8000
+
+          env:
+            - name: DATABASE_URL
+              value: sqlite:////data/interview.db
+
+          volumeMounts:
+            - name: db-storage
+              mountPath: /data
+
+      volumes:
+        - name: db-storage
+          persistentVolumeClaim:
+            claimName: hirequest-db-pvc

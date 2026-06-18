@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hirequest-frontend
+  namespace: hirequest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hirequest-frontend
+  template:
+    metadata:
+      labels:
+        app: hirequest-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: ghcr.io/pranavmadhahar/hirequest/frontend:latest
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - containerPort: 80

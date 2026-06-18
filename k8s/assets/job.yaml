@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hirequest-assets-builder
+  namespace: hirequest
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+
+      containers:
+        - name: assets
+          image: ghcr.io/pranavmadhahar/hirequest/assets:latest
+          imagePullPolicy: IfNotPresent
+
+          volumeMounts:
+            - name: vectorstore-storage
+              mountPath: /app/src/assets/assets/vectorstores
+
+      volumes:
+        - name: vectorstore-storage
+          persistentVolumeClaim:
+            claimName: hirequest-vectorstore-pvc
