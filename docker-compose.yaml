@@ -12,7 +12,7 @@ services:
       - "8000:8000"
     volumes:
       - ./data/db:/data
-      - ./data/vectorstores:/app/vectorstores
+      - ./data/vectorstores:/data/vectorstores
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
     depends_on:
@@ -21,5 +21,8 @@ services:
   assets:
     image: ghcr.io/pranavmadhahar/hirequest/assets:latest
     volumes:
-      - ./data/vectorstores:/data/vectorstores
+      - ./data/vectorstores:/app/src/assets/vectorstores
+      - ./data/raw_data:/app/src/assets/raw_data
+      - ./data/cleaned_data:/app/src/assets/cleaned_data
+      - ./data/chunks:/app/src/assets/chunks
     # command removed – assets now works directly with host vectorstores
