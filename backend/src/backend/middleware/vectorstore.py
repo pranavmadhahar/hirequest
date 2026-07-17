@@ -15,11 +15,14 @@ questions in the candidate's actual resume content.
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 
+embeddings = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/all-MiniLM-L6-v2"
+)
 
 def get_resume_context(
     candidate_id: int,
     role: str,
-    k: int = 10,
+    k: int = 5,
 ) -> str:
     """
     Retrieve resume context relevant to the target role.
@@ -39,10 +42,6 @@ def get_resume_context(
             Concatenated resume context assembled from
             the top-k retrieved chunks.
     """
-
-    embeddings = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-MiniLM-L6-v2"
-    )
 
     vectorstore = FAISS.load_local(
         f"../../assets/vectorstores/Candidate_Resumes/{candidate_id}",

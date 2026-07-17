@@ -22,7 +22,7 @@ class StartInterviewRequest(BaseModel):
 
     candidate_id: int
     role: str
-    n_questions: int = 3
+    n_questions: int = 4
 
 
 # ------------------------------------------------------------------

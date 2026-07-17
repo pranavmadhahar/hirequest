@@ -300,14 +300,15 @@ pip install -r requirements-dev.txt
 
 ### ▶️ Running the Backend
 
-From project root:
-
+1. Navigate to backend folder:
 ```bash
-uvicorn backend.src.backend.main:app --reload
+cd backend
 ```
-
+2. Run backend server
+```bash
+uvicorn backend.main:app
+```
 Backend runs at:
-
 ```code
 http://127.0.0.1:8000
 ```
