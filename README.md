@@ -1,3 +1,5 @@
+[![HireQuest Demo](https://img.youtube.com/vi/DrVCdJK0eT0/maxresdefault.jpg)](https://youtu.be/DrVCdJK0eT0)
+
 # HireQuest — Agentic Interview Simulation System
 
 HireQuest is a modular LangChain‑based agentic interview system designed to simulate structured technical interviews. It dynamically generates questions based on a candidate’s resume, the selected job role, and a role‑specific knowledge base.
